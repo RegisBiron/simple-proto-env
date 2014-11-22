@@ -20,7 +20,7 @@ module.exports = function (grunt) {
                 }
             },
             styles: {
-+                files: ['<%= config.dev %>/scss/*.scss'],
++                files: ['<%= config.dev %>/scss/**/*.scss'],
 +                tasks: ['sass:dev'],
 +                options: {
 +                    livereload: true
@@ -39,7 +39,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                   '**/*.html',
-                  '<%= config.dev %>/scss/*.scss'
+                  '<%= config.dev %>/scss/**/*.scss'
                 ]
             }
         },
@@ -49,7 +49,8 @@ module.exports = function (grunt) {
                 port: 9000,
                 open: true,
                 livereload: 35729,
-                hostname: 'localhost'
+                //to access with a mobile device, url should be http://Some.IP.Address:9000
+                hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
