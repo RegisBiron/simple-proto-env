@@ -20,12 +20,12 @@ module.exports = function (grunt) {
                 }
             },
             styles: {
-+                files: ['<%= config.dev %>/scss/**/*.scss'],
-+                tasks: ['sass:dev'],
-+                options: {
-+                    livereload: true
-+                }
-+            },
+                files: ['<%= config.dev %>/scss/**/*.scss'],
+                tasks: ['sass:dev'],
+                options: {
+                    livereload: true
+                }
+           },
             autoprefixer: {
                 files: ['.tmp/styles/*.css'],
                 tasks: ['autoprefixer:dev'],
@@ -111,21 +111,35 @@ module.exports = function (grunt) {
             }
         },
 
-        concat: {
-            dist: {
-                src: [
-                    '<%= config.dev %>/scripts/*.js'
-                ],
-                dest: '.tmp/scripts/main.js',
+        wiredep: {
+            app: {
+                src: ['**/*.html'],
+                exclude: ['bower_components/modernizr/modernizr.js']
             }
         },
 
-        uglify: {
-            dist: {
-                src: '.tmp/scripts/main.js',
-                dest: '<%= config.dist %>/scripts/main.min.js'
-            }
+        useminPrepare: {
+        options: {
+        dest: '<%= config.dist %>'
+            },
+            html: 'index.html'
         },
+
+        // concat: {
+        //     dist: {
+        //         src: [
+        //             '<%= config.dev %>/scripts/*.js'
+        //         ],
+        //         dest: '.tmp/scripts/main.js',
+        //     }
+        // },
+
+        // uglify: {
+        //     dist: {
+        //         src: '.tmp/scripts/main.js',
+        //         dest: '<%= config.dist %>/scripts/main.min.js'
+        //     }
+        // },
 
         clean: {
             src: [".tmp/"]
@@ -134,12 +148,33 @@ module.exports = function (grunt) {
         responsive_images: {
             dist: {
                 options: {
-                    engine: 'im'
+                    engine: 'im',
+                    sizes: [{
+                        width: 240,
+                        quality: 80,
+                    },{
+                        width: 320,
+                    },{
+                        width: 640,
+                    },{
+                        width: 1024,
+                    }]
                 },
                 files: [{
                     expand: true,
                     cwd: '<%= config.dev %>/images',
-                    src: '{,*/}*.{gif,jpeg,jpg,png}',
+                    src: '**/*.{gif,jpeg,jpg,png}',
+                    dest: '<%= config.dist %>/images'
+                }]
+            }
+        },
+
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    src: ['**/*'],
+                    cwd: '<%= config.dev %>/images',
                     dest: '<%= config.dist %>/images'
                 }]
             }
@@ -147,10 +182,10 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('dev', function (target) {
-
         grunt.task.run([
             'clean',
             'connect:livereload',
+            'wiredep',
             'sass:dev',
             'autoprefixer:dev',
             'watch'
@@ -160,6 +195,10 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean',
         'responsive_images',
+        'copy',
+        'useminPrepare',
+        'concat',
+        'uglify',
         'sass:dist',
         'bake:build',
         'concat:dist',

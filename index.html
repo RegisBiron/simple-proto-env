@@ -11,7 +11,10 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="dev/styles/main.css">
-        <script src="dev/js/vendor/modernizr-2.8.3.min.js"></script>
+        
+        <!-- build:js js/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -22,8 +25,12 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="dev/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+    <!-- build:js js/app.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
     <script src="dev/js/plugins.js"></script>
     <script src="dev/js/main.js"></script>
+    <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
