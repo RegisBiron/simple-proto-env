@@ -91,7 +91,7 @@ module.exports = function (grunt) {
         autoprefixer: {
             dist: {
                 options: {
-                    browsers: ['last 1 version']
+                    browsers: ['last 3 versions']
                 },
                 files: {
                     '<%= config.dist %>/style.css': ['.tmp/styles/style.css']
@@ -99,7 +99,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 options: {
-                    browsers: ['last 1 version'],
+                    browsers: ['last 3 versions'],
                     map: true
                 },
                 files: [{
@@ -199,10 +199,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concat',
         'uglify',
-        'sass:dist',
-        'bake:build',
-        'concat:dist',
-        'uglify:dist'
+        'sass:dist'
     ]);
 
     grunt.registerTask('default', [
