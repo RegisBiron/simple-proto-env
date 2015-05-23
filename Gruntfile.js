@@ -2,6 +2,7 @@
 module.exports = function (grunt) {
 
     require('load-grunt-tasks')(grunt);
+    grunt.loadNpmTasks('assemble');
 
     var config = {
         dev: 'dev',
@@ -38,7 +39,7 @@ module.exports = function (grunt) {
                   livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                  '**/*.html',
+                  '<%= config.dev %>/**/*.html',
                   '<%= config.dev %>/scss/**/*.scss'
                 ]
             }
@@ -54,14 +55,32 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                open: true,
-                    base: [
-                        '.tmp',
-                        ''
-                    ]
+                    middleware: function(connect) {
+                        return [
+                            connect.static('.tmp'),
+                            connect().use('/bower_components', connect.static('./bower_components')),
+                            connect.static(config.dev)
+                        ];
+                    }
                 }
             }
         },
+
+        assemble: {
+            pages: {
+                options: {
+                    flatten: true,
+                    assets: '<%= config.dev %>/src',
+                    layout: '<%= config.dev %>/src/templates/layouts/default.hbs',
+                    data: '<%= config.dev %>/src/data/*.{json,yml}',
+                    partials: '<%= config.dev %>/src/templates/partials/*.hbs'
+                },
+                files: {
+                    '<%= config.dev %>' : ['<%= config.dev %>/src/templates/pages/*.hbs']
+                }
+            }
+        },
+
 
         sass: {
             dist: {
@@ -113,8 +132,9 @@ module.exports = function (grunt) {
 
         wiredep: {
             app: {
-                src: ['**/*.html'],
-                exclude: ['bower_components/modernizr/modernizr.js']
+                src: ['<%= config.dev %>/src/templates/layouts/default.hbs'],
+                exclude: ['bower_components/modernizr/modernizr.js'],
+                ignorePath: /^(\/|\.+(?!\/[^\.]))+\.+/
             }
         },
 
@@ -142,7 +162,7 @@ module.exports = function (grunt) {
         // },
 
         clean: {
-            src: [".tmp/"]
+            src: ['.tmp/']
         },
 
         responsive_images: {
@@ -184,11 +204,13 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', function (target) {
         grunt.task.run([
             'clean',
-            'connect:livereload',
             'wiredep',
             'sass:dev',
             'autoprefixer:dev',
+            'assemble',
+            'connect:livereload',
             'watch'
+            
         ]);
     });
 

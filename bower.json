@@ -1,5 +1,5 @@
 {
-  "name": "my-boilerplate",
+  "name": "simple-proto-env",
   "version": "0.1.0",
   "authors": [
     "Regis Biron <hello@regisbiron.com>"
@@ -11,5 +11,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "*",
+    "modernizr": "*"
+  }
 }
