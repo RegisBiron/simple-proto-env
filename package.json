@@ -6,7 +6,6 @@
     "assemble": "*",
     "grunt": "*",
     "grunt-autoprefixer": "*",
-    "grunt-bake": "*",
     "grunt-contrib-clean": "*",
     "grunt-contrib-concat": "*",
     "grunt-contrib-connect": "*",

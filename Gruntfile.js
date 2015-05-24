@@ -34,12 +34,23 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
+            assemble: {
+                    files: ['<%= config.dev %>/src/data/*.{json,yml}',
+                            '<%= config.dev %>/src/templates/layouts/*.hbs',
+                            '<%= config.dev %>/src/templates/pages/*.hbs',
+                            '<%= config.dev %>/src/templates/partials/*.hbs'
+                    ],
+                tasks: ['assemble'],
+                options: {
+                    livereload: true
+                }
+            },
             livereload: {
                 options: {
                   livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                  '<%= config.dev %>/**/*.html',
+                  '<%= config.dev %>/*.html',
                   '<%= config.dev %>/scss/**/*.scss'
                 ]
             }
@@ -70,7 +81,7 @@ module.exports = function (grunt) {
             pages: {
                 options: {
                     flatten: true,
-                    assets: '<%= config.dev %>/src',
+                    assets: '<%= config.dev %>',
                     layout: '<%= config.dev %>/src/templates/layouts/default.hbs',
                     data: '<%= config.dev %>/src/data/*.{json,yml}',
                     partials: '<%= config.dev %>/src/templates/partials/*.hbs'
