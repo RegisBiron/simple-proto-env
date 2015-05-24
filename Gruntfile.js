@@ -15,13 +15,13 @@ module.exports = function (grunt) {
 
         watch: {
             js: {
-                files: ['<%= config.dev %>/js/**/*.js'],
+                files: ['<%= config.dev %>/static/js/**/*.js'],
                 options: {
                     livereload: true
                 }
             },
             styles: {
-                files: ['<%= config.dev %>/scss/**/*.scss'],
+                files: ['<%= config.dev %>/static/scss/**/*.scss'],
                 tasks: ['sass:dev'],
                 options: {
                     livereload: true
@@ -34,11 +34,18 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
+            wiredep: {
+                files: ['bower_components/'],
+                tasks: ['wiredep'],
+                options: {
+                    livereload: true
+                }
+            },
             assemble: {
-                    files: ['<%= config.dev %>/src/data/*.{json,yml}',
-                            '<%= config.dev %>/src/templates/layouts/*.hbs',
-                            '<%= config.dev %>/src/templates/pages/*.hbs',
-                            '<%= config.dev %>/src/templates/partials/*.hbs'
+                    files: ['<%= config.dev %>/data/*.{json,yml}',
+                            '<%= config.dev %>/templates/layouts/*.hbs',
+                            '<%= config.dev %>/templates/pages/*.hbs',
+                            '<%= config.dev %>/templates/partials/*.hbs'
                     ],
                 tasks: ['assemble'],
                 options: {
@@ -50,8 +57,8 @@ module.exports = function (grunt) {
                   livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                  '<%= config.dev %>/*.html',
-                  '<%= config.dev %>/scss/**/*.scss'
+                  // '<%= config.dev %>/static/*.html',
+                  '<%= config.dev %>/static/scss/**/*.scss'
                 ]
             }
         },
@@ -70,7 +77,7 @@ module.exports = function (grunt) {
                         return [
                             connect.static('.tmp'),
                             connect().use('/bower_components', connect.static('./bower_components')),
-                            connect.static(config.dev)
+                            connect.static(config.dev + '/static')
                         ];
                     }
                 }
@@ -81,13 +88,13 @@ module.exports = function (grunt) {
             pages: {
                 options: {
                     flatten: true,
-                    assets: '<%= config.dev %>',
-                    layout: '<%= config.dev %>/src/templates/layouts/default.hbs',
-                    data: '<%= config.dev %>/src/data/*.{json,yml}',
-                    partials: '<%= config.dev %>/src/templates/partials/*.hbs'
+                    assets: '<%= config.dev %>/static',
+                    layout: '<%= config.dev %>/templates/layouts/default.hbs',
+                    data: '<%= config.dev %>/data/*.{json,yml}',
+                    partials: '<%= config.dev %>/templates/partials/*.hbs'
                 },
                 files: {
-                    '<%= config.dev %>' : ['<%= config.dev %>/src/templates/pages/*.hbs']
+                    '<%= config.dev %>/static' : ['<%= config.dev %>/templates/pages/*.hbs']
                 }
             }
         },
@@ -99,7 +106,7 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 expand: true,
-                cwd: '<%= config.dev %>/scss/',
+                cwd: '<%= config.dev %>/static/scss/',
                 src: ['*.scss'],
                 dest: '.tmp/styles/',
                 ext: '.css'
@@ -111,7 +118,7 @@ module.exports = function (grunt) {
                     lineNumbers: true
                 },
                 expand: true,
-                cwd: '<%= config.dev %>/scss/',
+                cwd: '<%= config.dev %>/static/scss/',
                 src: ['*.scss'],
                 dest: '.tmp/styles/',
                 ext: '.css'
@@ -124,7 +131,7 @@ module.exports = function (grunt) {
                     browsers: ['last 3 versions']
                 },
                 files: {
-                    '<%= config.dist %>/style.css': ['.tmp/styles/style.css']
+                    '<%= config.dist %>/build/main.css': ['.tmp/styles/main.css']
                 }
             },
             dev: {
@@ -136,14 +143,14 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: '.tmp/styles/',
                     src: '*.css',
-                    dest: '<%= config.dev %>/styles/'
+                    dest: '<%= config.dev %>/static/styles/'
                 }]
             }
         },
 
         wiredep: {
             app: {
-                src: ['<%= config.dev %>/src/templates/layouts/default.hbs'],
+                src: ['<%= config.dev %>/templates/layouts/default.hbs'],
                 exclude: ['bower_components/modernizr/modernizr.js'],
                 ignorePath: /^(\/|\.+(?!\/[^\.]))+\.+/
             }
@@ -193,7 +200,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= config.dev %>/images',
+                    cwd: '<%= config.dev %>/static/images',
                     src: '**/*.{gif,jpeg,jpg,png}',
                     dest: '<%= config.dist %>/images'
                 }]
@@ -205,8 +212,8 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     src: ['**/*'],
-                    cwd: '<%= config.dev %>/images',
-                    dest: '<%= config.dist %>/images'
+                    cwd: '<%= config.dev %>/static/images',
+                    dest: '<%= config.dist %>/static/images'
                 }]
             }
         }
