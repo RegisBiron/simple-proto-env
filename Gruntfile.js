@@ -47,7 +47,7 @@ module.exports = function (grunt) {
                             '<%= config.dev %>/templates/pages/*.hbs',
                             '<%= config.dev %>/templates/partials/*.hbs'
                     ],
-                tasks: ['assemble'],
+                tasks: ['assemble:dev'],
                 options: {
                     livereload: true
                 }
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
         },
 
         assemble: {
-            pages: {
+            dev: {
                 options: {
                     flatten: true,
                     assets: '<%= config.dev %>/static',
@@ -95,6 +95,18 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%= config.dev %>/static' : ['<%= config.dev %>/templates/pages/*.hbs']
+                }
+            },
+            dist: {
+                options: {
+                    flatten: true,
+                    assets: '<%= config.dev %>/static',
+                    layout: '<%= config.dev %>/templates/layouts/default.hbs',
+                    data: '<%= config.dev %>/data/*.{json,yml}',
+                    partials: '<%= config.dev %>/templates/partials/*.hbs'
+                },
+                files: {
+                    '<%= config.dist %>' : ['<%= config.dev %>/templates/pages/*.hbs']
                 }
             }
         },
@@ -200,9 +212,9 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= config.dev %>/static/images',
+                    cwd: '<%= config.dev %>/static/img',
                     src: '**/*.{gif,jpeg,jpg,png}',
-                    dest: '<%= config.dist %>/images'
+                    dest: '<%= config.dist %>/img'
                 }]
             }
         },
@@ -212,8 +224,8 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     src: ['**/*'],
-                    cwd: '<%= config.dev %>/static/images',
-                    dest: '<%= config.dist %>/static/images'
+                    cwd: '<%= config.dev %>/static/img',
+                    dest: '<%= config.dist %>/static/img'
                 }]
             }
         }
@@ -225,7 +237,7 @@ module.exports = function (grunt) {
             'wiredep',
             'sass:dev',
             'autoprefixer:dev',
-            'assemble',
+            'assemble:dev',
             'connect:livereload',
             'watch'
             
@@ -234,6 +246,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean',
+        'assemble:dist',
         'responsive_images',
         'copy',
         'useminPrepare',
