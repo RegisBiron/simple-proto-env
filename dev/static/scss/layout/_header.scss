@@ -2,4 +2,11 @@
    @Layout -> Header
    ========================================================================= */
 
+	.l-header{
+		width: 100%;
+		border-bottom: 1px solid $gray;
+		padding: em(15);
+		box-sizing: border-box;
+	}
+
 /* @layout -> header */

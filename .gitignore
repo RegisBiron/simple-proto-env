@@ -3,4 +3,5 @@ node_modules
 .sass-cache
 .tmp
 dev/styles
+dev/static/**/*.html
 bower_components

@@ -1,11 +1,14 @@
 /* ============================================================================
-   @Layout -> Grid
+   @Base -> Base
    ========================================================================= */
-	
-	@for $i from 1 through $gridColumns{
-		.grid__column--#{$i}{
-			width: 100% / $gridColumns * $i;
-		}
-	} 
 
-/* @layout -> grid */
+	body{
+		font-size: 16px;
+	}
+	
+	a{
+		color: $gray;
+		text-decoration: none;
+	}
+
+/* @base -> base */
